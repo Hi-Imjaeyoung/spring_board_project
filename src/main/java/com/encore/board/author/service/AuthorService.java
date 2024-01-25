@@ -87,8 +87,8 @@ public class AuthorService {
                 .id(author.getId())
                 .name(author.getName())
                 .password(author.getPassword())
+                .role(role)
                 .email(author.getEmail())
-                .role(author.getRole())
                 .createdTime(author.getCreatedTime())
                 .postsNumber(author.getPosts().size())
                 .build();
@@ -101,13 +101,14 @@ public class AuthorService {
         return authorDetailResDto;
     }
 
-    public void update(Long id, AuthorUpdateReqDto authorUpdateReqDto) throws EntityNotFoundException {
+    public Author update(Long id, AuthorUpdateReqDto authorUpdateReqDto) throws EntityNotFoundException {
         Author author = this.findById(id);
         author.updateAuthor(authorUpdateReqDto.getName(), authorUpdateReqDto.getPassword());
         // TODO : 더티쳌 , Transactional 이 필요함
         // 명시적으로 save 하지 않더라도 jpa의 영속성 컨텍스트를 통해 객체의 변경이 감지 되면(더티 체킹) Transaction이 완료되는 시점에
         // save가 동작.
         authorRepository.save(author);
+        return author;
     }
 
     public void delete(Long id) throws EntityNotFoundException {

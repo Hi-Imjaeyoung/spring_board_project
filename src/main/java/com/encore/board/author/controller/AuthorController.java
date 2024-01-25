@@ -1,5 +1,7 @@
 package com.encore.board.author.controller;
 
+import com.encore.board.author.domain.Author;
+import com.encore.board.author.dto.AuthorDetailResDto;
 import com.encore.board.author.dto.AuthorSaveReqDto;
 import com.encore.board.author.dto.AuthorUpdateReqDto;
 import com.encore.board.author.service.AuthorService;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class AuthorController {
@@ -53,4 +56,19 @@ public class AuthorController {
         authorService.delete(id);
         return "redirect:/author/list";
     }
+
+    //Entity 순환참조 이슈 테스트
+    @GetMapping("/author/{id}/circle/entity")
+    @ResponseBody
+    // 연관관계가 있는 author entity를 json으로 직렬화 하게 될 경우 순환참조 이슈 발생하므로, dto 사용필요
+    public Author circleIssueTest1(@PathVariable Long id){
+        return authorService.findById(id);
+    }
+
+    @GetMapping("/author/{id}/circle/dto")
+    @ResponseBody
+    public AuthorDetailResDto circleIssueTest2(@PathVariable Long id){
+        return authorService.findAuthorDetail(id);
+    }
+
 }

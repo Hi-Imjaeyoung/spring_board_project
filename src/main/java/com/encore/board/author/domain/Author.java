@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
-//TODO : No default constructor for entity:
+//TODO : 생성자가 존재하면 기본 생성자 필요
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
@@ -37,14 +37,13 @@ public class Author {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
-
     //TODO: cascade test
 //    @Setter
     // Author를 조회 할때, post객체가 필요할 시 선언
     // Post의 Author의 변수를 명시
     // mappedBy를 연관관계의 주인을 명시하고, fk를 관리하는 변수명을 명시한다.
                                                                 // 로딩 전략 디폴트가 LAZY
+    //1대1관계인 경우 OneToOne
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Post> posts;
 
