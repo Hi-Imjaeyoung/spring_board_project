@@ -15,7 +15,8 @@ import java.util.List;
 
 @Entity
 @Getter
-//@NoArgsConstructor
+//TODO : No default constructor for entity:
+@NoArgsConstructor
 @Builder
 @AllArgsConstructor
 public class Author {
@@ -43,7 +44,7 @@ public class Author {
     // Author를 조회 할때, post객체가 필요할 시 선언
     // Post의 Author의 변수를 명시
     // mappedBy를 연관관계의 주인을 명시하고, fk를 관리하는 변수명을 명시한다.
-                                                                // 로딩 전략
+                                                                // 로딩 전략 디폴트가 LAZY
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Post> posts;
 

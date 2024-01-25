@@ -39,6 +39,7 @@ public class AuthorService {
                 .email(authorSaveReqDto.getEmail())
                 .name(authorSaveReqDto.getName())
                 .password(authorSaveReqDto.getPassword())
+                .role(role)
                 .build();
 
         // cascade.persist 테스트
@@ -86,6 +87,7 @@ public class AuthorService {
                 .id(author.getId())
                 .name(author.getName())
                 .password(author.getPassword())
+                .email(author.getEmail())
                 .role(author.getRole())
                 .createdTime(author.getCreatedTime())
                 .postsNumber(author.getPosts().size())

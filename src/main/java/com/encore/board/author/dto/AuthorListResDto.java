@@ -11,5 +11,5 @@ public class AuthorListResDto {
     private String name;
     private String email;
     private String password;
-    private Role role;
+    private String role;
 }

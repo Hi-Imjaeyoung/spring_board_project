@@ -18,12 +18,12 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @GetMapping("author/create")
+    @GetMapping("/author/create")
     public String authorCreate(){
         return "author/author-create";
     }
 
-    @PostMapping("author/create")
+    @PostMapping("/author/create")
     public String authorSave(AuthorSaveReqDto authorSaveReqDto){
         authorService.save(authorSaveReqDto);
         return "redirect:/author/list";
@@ -37,7 +37,6 @@ public class AuthorController {
 
     @GetMapping("author/detail/{id}")
     public String authorDetail(@PathVariable Long id, Model model){
-        System.out.println(id);
         model.addAttribute("author", authorService.findAuthorDetail(id));
         return "author/author-detail";
     }
