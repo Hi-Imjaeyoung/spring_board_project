@@ -23,7 +23,10 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public void save(AuthorSaveReqDto authorSaveReqDto) {
+    public void save(AuthorSaveReqDto authorSaveReqDto) throws IllegalArgumentException{
+        if(authorRepository.findByEmail(authorSaveReqDto.getEmail()).isPresent()){
+            throw new IllegalArgumentException("이메일이 중복입니다");
+        }
         Role role = null;
         if(authorSaveReqDto.getRole() == null || authorSaveReqDto.getRole().equals("user")){
             role = Role.USER;
@@ -51,7 +54,7 @@ public class AuthorService {
 //                .author(author)
 //                .build();
 //        posts.add(post);
-        //author.setPosts(posts);
+//        author.setPosts(posts);
         authorRepository.save(author);
     }
 

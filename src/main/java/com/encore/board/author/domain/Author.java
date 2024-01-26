@@ -1,10 +1,7 @@
 package com.encore.board.author.domain;
 
 import com.encore.board.post.domain.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.*;
 
 import javax.persistence.*;
@@ -38,12 +35,13 @@ public class Author {
     private Role role;
 
     //TODO: cascade test
-//    @Setter
+
     // Author를 조회 할때, post객체가 필요할 시 선언
     // Post의 Author의 변수를 명시
     // mappedBy를 연관관계의 주인을 명시하고, fk를 관리하는 변수명을 명시한다.
                                                                 // 로딩 전략 디폴트가 LAZY
     //1대1관계인 경우 OneToOne
+    @Setter
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Post> posts;
 

@@ -34,5 +34,14 @@
         <button type="submit" class="btn btn-primary mt-3">가입완료</button>
     </div>
 </form>
+<div th:if="${errorMessage != null}">
+    <input type="hidden" id="error" th:value="${errorMessage}">
+</div>
+<script>
+    let errorMessage = document.getElementById("error").value;
+    if(errorMessage){
+        alert(errorMessage);
+    }
+</script>
 </body>
 </html>

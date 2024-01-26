@@ -12,7 +12,7 @@
 <form action="/post/create" method="POST">
     <div class="form-group">
         <label for="title">제목</label>
-        <input type="text" id="title" class="form-control" name="title">
+        <input type="text" id="title" class="form-control" name="title" required>
     </div>
     <div class="form-group">
         <label for="contents">내용</label>
@@ -23,9 +23,23 @@
         <input type="text" id="email" class="form-control" name="email">
     </div>
     <div class="form-group">
+        <input type="radio" name="appointment">예약 글쓰기</input>
+    </div>
+    <div class="form-group">
+        등록 시간 <input type="datetime-local" name="appointTime">
+    </div>
+    <div class="form-group">
         <button type="submit" class="btn btn-primary mt-3">등록하기</button>
     </div>
-
 </form>
+<div th:if="${errorMessage != null}">
+    <input type="hidden" id="error" th:value="${errorMessage}">
+</div>
+<script>
+    let errorMessage = document.getElementById("error").value;
+    if(errorMessage){
+        alert(errorMessage);
+    }
+</script>
 </body>
 </html>

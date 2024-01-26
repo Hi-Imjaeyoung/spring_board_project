@@ -82,6 +82,6 @@ class AuthorServiceTest {
         //when
 
         //then
-        Assertions.assertEquals(3,authorService.findAll().size());
+        Assertions.assertEquals(authors.size(),authorService.findAll().size());
     }
 }

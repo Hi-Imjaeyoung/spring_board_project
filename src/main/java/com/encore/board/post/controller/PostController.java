@@ -1,14 +1,20 @@
 package com.encore.board.post.controller;
 
 import com.encore.board.post.dto.PostCreateReqDto;
+import com.encore.board.post.dto.PostListResDto;
 import com.encore.board.post.dto.PostUpdateReqDto;
 import com.encore.board.post.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class PostController {
@@ -23,16 +29,22 @@ public class PostController {
         return "post/post-create";
     }
     @PostMapping("post/create")
-    public String postSave(PostCreateReqDto postCreateReqDto){
-        postService.save(postCreateReqDto);
-        return "redirect:/post/list";
+    public String postSave(Model model,PostCreateReqDto postCreateReqDto){
+        try {
+            postService.save(postCreateReqDto);
+            return "redirect:/post/list";
+        }catch (IllegalArgumentException e){
+            model.addAttribute("errorMessage",e.getMessage());
+            return "post/post-create";
+        }
+
+
     }
 
     @GetMapping("post/list")
-    public String postList(Model model) {
-        model.addAttribute("postList", postService.findAll());
+    public String postList(Model model,@PageableDefault(size = 5,sort = "createdTime",direction = Sort.Direction.DESC) Pageable pageable) {
+        model.addAttribute("postList", postService.findByAppointmentPaging(pageable));
         return "post/post-list";
-//        return postService.findAll();
     }
 
     @GetMapping("post/detail/{id}")
@@ -54,4 +66,12 @@ public class PostController {
         postService.delete(id);
         return "redirect:/post/list";
     }
+
+//    @GetMapping("json/post/list")
+//    @ResponseBody
+//    // localhost:8080/json/post/list?size=5&page=1&sort=xx,desc
+//    public Page<PostListResDto> postList(Pageable pageable) {
+//        return postService.findAllJson(pageable);
+////        return postService.findAll();
+//    }
 }

@@ -27,8 +27,14 @@ public class AuthorController {
     }
 
     @PostMapping("/author/create")
-    public String authorSave(AuthorSaveReqDto authorSaveReqDto){
-        authorService.save(authorSaveReqDto);
+    public String authorSave(Model model,AuthorSaveReqDto authorSaveReqDto){
+        try {
+            authorService.save(authorSaveReqDto);
+        }catch (IllegalArgumentException e){
+            model.addAttribute("errorMessage",e.getMessage());
+            // TODO: Model을 넣어주기 위해서는 url경로를 줘야한다.
+            return "author/author-create";
+        }
         return "redirect:/author/list";
     }
 
