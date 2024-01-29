@@ -5,6 +5,7 @@ import com.encore.board.author.dto.AuthorDetailResDto;
 import com.encore.board.author.dto.AuthorSaveReqDto;
 import com.encore.board.author.dto.AuthorUpdateReqDto;
 import com.encore.board.author.service.AuthorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@Slf4j
 public class AuthorController {
     private final AuthorService authorService;
     @Autowired
@@ -31,6 +33,7 @@ public class AuthorController {
         try {
             authorService.save(authorSaveReqDto);
         }catch (IllegalArgumentException e){
+            log.error(e.getMessage());
             model.addAttribute("errorMessage",e.getMessage());
             // TODO: Model을 넣어주기 위해서는 url경로를 줘야한다.
             return "author/author-create";
