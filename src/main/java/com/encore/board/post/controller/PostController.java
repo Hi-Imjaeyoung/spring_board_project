@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.net.http.HttpRequest;
+
 @Controller
 @Slf4j
 public class PostController {
@@ -31,9 +35,17 @@ public class PostController {
         return "post/post-create";
     }
     @PostMapping("post/create")
-    public String postSave(Model model,PostCreateReqDto postCreateReqDto){
-        try {
-            postService.save(postCreateReqDto);
+    public String postSave(Model model, PostCreateReqDto postCreateReqDto,HttpSession session){
+       try {
+           // 1. 서블릿 리퀘를 매개변수로 받아서 활용
+//            HttpServletRequest req를 매개 변수에 주입한 뒤,
+//            HttpSession session = req.getSession(); //세션값을 꺼내어 getAttribute("email")한다
+
+           // 2.  Session을 바로 매개변수로 받아서 활용
+
+           // 위 두방법은 LoginSuccessHandler에서 session에 값을 담아줬기 때문에 가능한 것!!
+
+            postService.save(postCreateReqDto,session.getAttribute("email").toString());
             return "redirect:/post/list";
         }catch (IllegalArgumentException e){
             log.error(e.getMessage());

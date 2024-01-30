@@ -10,6 +10,8 @@ import com.encore.board.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -29,8 +31,10 @@ public class PostService {
         this.authorRepository = authorRepository;
     }
 
-    public void save(PostCreateReqDto postSaveReqDto){
-//        Post post = new Post(postCreateReqDto.getTitle(), postCreateReqDto.getContents());
+    public void save(PostCreateReqDto postSaveReqDto,String email){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String email = authentication.getName();
+
         String appoint =null;
         Post post = null;
         LocalDateTime localDateTime=null;
@@ -47,7 +51,7 @@ public class PostService {
         post = Post.builder()
                 .title(postSaveReqDto.getTitle())
                 .contents(postSaveReqDto.getContents())
-                .author(authorRepository.findByEmail(postSaveReqDto.getEmail()).orElse(null))
+                .author(authorRepository.findByEmail(email).orElse(null))
                 .appointment(appoint)
                 .appointTime(localDateTime)
                 .build();
