@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 public class PostCreateReqDto {
     private String title;
     private String Contents;
-    private String email;
     private boolean appointment;
     private String appointTime;
 }
