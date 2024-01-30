@@ -9,6 +9,8 @@ import com.encore.board.author.dto.AuthorUpdateReqDto;
 import com.encore.board.author.repository.AuthorRepository;
 import com.encore.board.post.domain.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,11 +19,18 @@ import java.util.List;
 
 @Service
 public class AuthorService {
-    private final AuthorRepository authorRepository;
     @Autowired
-    public AuthorService(AuthorRepository authorRepository) {
+    private final AuthorRepository authorRepository;
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    public AuthorService(AuthorRepository authorRepository, PasswordEncoder passwordEncoder) {
         this.authorRepository = authorRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
+
 
     public void save(AuthorSaveReqDto authorSaveReqDto) throws IllegalArgumentException{
         if(authorRepository.findByEmail(authorSaveReqDto.getEmail()).isPresent()){
@@ -41,7 +50,7 @@ public class AuthorService {
         Author author = Author.builder()
                 .email(authorSaveReqDto.getEmail())
                 .name(authorSaveReqDto.getName())
-                .password(authorSaveReqDto.getPassword())
+                .password(passwordEncoder.encode(authorSaveReqDto.getPassword()))
                 .role(role)
                 .build();
 
@@ -118,6 +127,10 @@ public class AuthorService {
         Author author = this.findById(id);
         authorRepository.delete(author);
 //        authorRepository.deleteById(id);
+    }
+
+    public Author findByEmail(String email) throws UsernameNotFoundException{
+        return authorRepository.findByEmail(email).orElseThrow(()->new UsernameNotFoundException("이메일이 없습니다"));
     }
 }
 
