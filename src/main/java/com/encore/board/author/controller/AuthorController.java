@@ -7,6 +7,7 @@ import com.encore.board.author.dto.AuthorUpdateReqDto;
 import com.encore.board.author.service.AuthorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,8 @@ public class AuthorController {
         return "redirect:/author/list";
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    // ADMIN 유저가 아니면 조회가 불가능 하게 함
     @GetMapping("author/list")
     public String authorList(Model model) {
         model.addAttribute("authorList", authorService.findAll());
@@ -80,4 +83,12 @@ public class AuthorController {
         return authorService.findAuthorDetail(id);
     }
 
+    @GetMapping("/author/login-page")
+    public String authorLogin(){
+        return "author/author-login";
+    }
+    @GetMapping("/")
+    public String home(){
+        return "home";
+    }
 }
